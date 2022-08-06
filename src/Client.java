@@ -4,8 +4,8 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class Client {
-    final static String HOST_IP = "127.0.0.1";
-    final static int PORT_TO_REQUEST = 1221;
+    final static String HOST_IP = "https://tricky-crews-buy-89-64-64-187.loca.lt";
+    final static int PORT_TO_REQUEST = 4944;
 
     static Socket socket;
     static InputStream inputStream;
