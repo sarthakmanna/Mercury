@@ -1,28 +1,32 @@
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.time.*;
 
 public class Server {
     static ServerSocket MONITORING_SOCKET;
-    final static int PORT_TO_MONITOR = 1221;
+    final static int PORT_TO_MONITOR = 4944;
 
     public static void main(String[] args) {
         MONITORING_SOCKET = null;
 
         try {
-            MONITORING_SOCKET = new ServerSocket(PORT_TO_MONITOR);
+            MONITORING_SOCKET = new ServerSocket(PORT_TO_MONITOR, 0, InetAddress.getByName("localhost"));
         } catch (Exception | Error e) {
             System.out.println("Exception/Error occurred while creating port: " + e.getMessage());
         }
+        System.out.println("Starting server at " + MONITORING_SOCKET.getInetAddress());
 
-        System.out.println("Starting server...");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd HH:mm:ss");
         Socket incomingSocket;
         while (true) {
             try {
                 incomingSocket = MONITORING_SOCKET.accept();
-                System.out.println("\nAccepted incoming connection: " + incomingSocket.getInetAddress());
+                System.out.println("\n[" + dtf.format(LocalDateTime.now()) + "] Accepted incoming connection: " + incomingSocket.getInetAddress());
 
                 ParallelServer server = new ParallelServer(incomingSocket);
                 server.start();
